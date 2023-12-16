@@ -19,7 +19,7 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-transform = transforms.Compose([transforms.Resize((128,128)), transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+transform = transforms.Compose([transforms.Resize((256,256)), transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
 
 train_dataset = torchvision.datasets.ImageFolder('',transform=transform)
