@@ -32,7 +32,7 @@ model = MyNetwork().to(device)
 weight = 0.6
 loss_fn1 = nn.CrossEntropyLoss()
 loss_fn = FocalLoss()
-# loss_all = weight*loss_fn()+(1-weight)*loss_fn1()
+
 optimizer = torch.optim.Adam(params=model.parameters(),lr=LR, weight_decay=weight_decay)
 lr_scheduler = lr_scheduler.StepLR(optimizer,step_size=50,gamma=0.5)
 
@@ -57,15 +57,8 @@ def regularization_loss(weight_list, weight_decay):
 def train(dataloder,model,loss_fn,optimizer):
     loss,current,n,regularzation_loss = 0.0,0.0,0,0
     for batch,(x,y) in enumerate(dataloder):
-        # l2_loss = []
         image,y = x.to(device),y.to(device)
         output = model(image)
-        # for pram in model.parameters():
-        #     regularzation_loss += torch.sum(pram.pow(2))#(torch.pow(pram,2))
-        # # for module in model.modules():
-        # #     if type(module) is nn.Conv2d:
-        # #         l2_loss.append((module.weight ** 2).sum() / 2.0)
-        # # regularzation_loss= weight_decay * l2_loss
         current_loss = loss_fn1(output,y) #+ weight_decay * regularzation_loss
         _,pred = torch.max(output,1)
         cur_acc = torch.sum(y == pred)/output.shape[0]
@@ -74,13 +67,12 @@ def train(dataloder,model,loss_fn,optimizer):
         current_loss.backward()
         optimizer.step()
         loss += current_loss.item()
-        # regular_loss += regularzation_loss.item()
         current += cur_acc.item()
         n = n+1
-    # regularzate_loss = weight_decay * regularzation_loss/n
+
     train_loss = loss/n
     train_acc = current/n
-    # print('regular_loss:'+str(regularzate_loss))
+
     print('train_loss:'+ str(train_loss))
     print('train_acc:'+ str(train_acc))
     return train_loss,train_acc
