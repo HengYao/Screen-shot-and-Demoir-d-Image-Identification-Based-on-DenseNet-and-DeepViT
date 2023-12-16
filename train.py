@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 import cv2
 plt.rcParams["font.sans-serif"] = ['Simhei']
 plt.rcParams['axes.unicode_minus'] = False
-# LR = 0.00003
+
 LR = 0.001
 weight_decay = 0.000000000000
 EPOCH = 100
