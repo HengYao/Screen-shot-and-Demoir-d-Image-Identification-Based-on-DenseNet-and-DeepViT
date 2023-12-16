@@ -19,7 +19,7 @@ weight_decay = 0.000000000000
 EPOCH = 100
 BATCHSIZE = 128
 print('epoch=%d'%(EPOCH),'batchsize=%d'%(BATCHSIZE),'LR=%.10f'%(LR))
-# 预处理
+
 transform = transforms.Compose([transforms.Resize((256,256)), transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
 train_dataset = torchvision.datasets.ImageFolder('full_size256/train',transform=transform)
@@ -29,7 +29,6 @@ test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=128, shuf
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model = MyNetwork().to(device)
-# model.load_state_dict(torch.load('C:/Users/DELL/Desktop/biaoqian/save_model/best_model.pth')
 weight = 0.6
 loss_fn1 = nn.CrossEntropyLoss()
 loss_fn = FocalLoss()
@@ -112,7 +111,6 @@ def matplot_loss(train_loss,val_loss):
     plt.legend(loc = 'best')
     plt.xlabel('epoch')
     plt.ylabel('loss')
-    # plt.title('训练集和验证集loss值对比图')
     plt.show()
 
 def matplot_acc(train_acc, val_acc):
@@ -121,26 +119,13 @@ def matplot_acc(train_acc, val_acc):
     plt.legend(loc='best')
     plt.xlabel('epoch')
     plt.ylabel('Accuracy rate ')
-    # plt.title('训练集和验证集acc值对比图')
     plt.show()
 
 loss_train = []
 acc_train = []
 loss_val = []
 acc_val = []
-# log_dir = 'C:/Users/DELL/Desktop/biaoqian/save_model/best_model.pth'
-# if os.path.exists(log_dir):
-#         checkpoint = torch.load(log_dir)
-#         model.load_state_dict(checkpoint['model'])
-#         optimizer.load_state_dict(checkpoint['optimizer'])
-#         start_epoch = checkpoint['epoch']
-#         print('加载 epoch {} 成功！'.format(start_epoch))
-# else:
-#     start_epoch = 0
-#     print('无保存模型，将从头开始训练！')
-min_acc = 0.8467
-# w_list=get_weight(model)
-# reg_loss = regularization_loss(w_list,weight_decay)
+
 for t in range(EPOCH):
     lr_scheduler.step()
     print(f"epoch{t+1}:")
@@ -161,7 +146,7 @@ for t in range(EPOCH):
         torch.save(state,'save_model/best_model.pth')
     if t == EPOCH-1:
         state = {'model': model.state_dict(), 'optimizer': optimizer.state_dict(), 'epoch': t + 1}# + start_epoch}
-        torch.save(model.state_dict(), "save_model/last_model_128.pth")
+        torch.save(model.state_dict(), "save_model/last_model_256.pth")
 
 matplot_loss(loss_train,loss_val)
 matplot_acc(acc_train,acc_val)
