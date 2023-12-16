@@ -21,21 +21,15 @@ warnings.filterwarnings("ignore")
 
 transform = transforms.Compose([transforms.Resize((128,128)), transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
-# 使用torchvision.datasets.ImageFolder读取数据集 指定train 和 test文件夹
-train_dataset = torchvision.datasets.ImageFolder('AAP_full_size256/train',transform=transform)
+
+train_dataset = torchvision.datasets.ImageFolder('',transform=transform)
 train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=64, shuffle=True, num_workers=0)
-test_dataset = torchvision.datasets.ImageFolder(r'C:\Users\DELL\Desktop\biaoqian\AAP_full_size256\test\AFN_512', transform=transform)  #AAP_full_size256/test
+test_dataset = torchvision.datasets.ImageFolder(r'', transform=transform)  
 test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=128, shuffle=True, num_workers=0)
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model = MyNetwork().to(device)
-# path = 'C:/Users/DELL/Desktop/biaoqian/save_model/last_model_256.pth'
-# checkpoint = torch.load(path)
-# model.load_state_dict(checkpoint['model'])
-# optimizer.load_state_dict(checkpoint['optimizer'])
-# epoch = checkpoint(['epoch'])
-# model.load_state_dict(torch.load('C:/Users/DELL/Desktop/biaoqian/save_model/last_model_256.pth')['model'])
-model.load_state_dict(torch.load('C:/Users/DELL/Desktop/biaoqian/save_model/last_model_256.pth'))
+model.load_state_dict(torch.load(''))
 
 classes = ['original','recaptured',]
 show = ToPILImage()
